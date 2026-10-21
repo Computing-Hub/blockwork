@@ -1,0 +1,245 @@
+{
+  "name": "MQTT Sensor Simulator",
+  "version": "1.0",
+  "createdWith": "Blockwork v0.1",
+  "screens": [
+    {
+      "name": "Screen1",
+      "properties": {
+        "BackgroundColor": "#f8fafc",
+        "Title": "Sensor Simulator",
+        "ScrollableContent": true
+      },
+      "components": [
+        {
+          "id": "comp_1",
+          "name": "Title",
+          "type": "Label",
+          "properties": {
+            "Text": "🌡️ Sensor simulator",
+            "TextColor": "#111827",
+            "FontSize": 20,
+            "FontBold": true,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_2",
+          "name": "Help",
+          "type": "Label",
+          "properties": {
+            "Text": "The sliders pretend to be a sensor. Each button publishes a differently coded message on ONE topic; the app decodes it and sends each reading to its widget.",
+            "TextColor": "#475569",
+            "FontSize": 14,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_3",
+          "name": "Status",
+          "type": "Label",
+          "properties": {
+            "Text": "Not connected: type your topic, then press Connect",
+            "TextColor": "#b45309",
+            "FontSize": 16,
+            "FontBold": true,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_4",
+          "name": "TopicBox",
+          "type": "TextBox",
+          "properties": {
+            "Hint": "Topic",
+            "Text": "blockwork/yourname/sensors",
+            "MultiLine": false,
+            "TextAlign": "Left"
+          }
+        },
+        {
+          "id": "comp_18",
+          "name": "ConnectButton",
+          "type": "Button",
+          "properties": {
+            "Text": "Connect / listen on this topic",
+            "BackgroundColor": "#16a34a",
+            "TextColor": "#ffffff",
+            "Enabled": true,
+            "Width": "fill",
+            "Height": "auto"
+          }
+        },
+        {
+          "id": "comp_5",
+          "name": "TempLabel",
+          "type": "Label",
+          "properties": {
+            "Text": "Temperature to send (°C):",
+            "TextColor": "#111827",
+            "FontSize": 14,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_6",
+          "name": "TempSlider",
+          "type": "Slider",
+          "properties": {
+            "Min": 0,
+            "Max": 50,
+            "Value": 21,
+            "Color": "#14b8a6"
+          }
+        },
+        {
+          "id": "comp_7",
+          "name": "HumLabel",
+          "type": "Label",
+          "properties": {
+            "Text": "Humidity to send (%):",
+            "TextColor": "#111827",
+            "FontSize": 14,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_8",
+          "name": "HumSlider",
+          "type": "Slider",
+          "properties": {
+            "Min": 0,
+            "Max": 100,
+            "Value": 55,
+            "Color": "#6366f1"
+          }
+        },
+        {
+          "id": "comp_9",
+          "name": "TempButton",
+          "type": "Button",
+          "properties": {
+            "Text": "Send temp only   →  temp:21",
+            "BackgroundColor": "#14b8a6",
+            "TextColor": "#ffffff",
+            "Enabled": true,
+            "Width": "fill",
+            "Height": "auto"
+          }
+        },
+        {
+          "id": "comp_10",
+          "name": "HumButton",
+          "type": "Button",
+          "properties": {
+            "Text": "Send humidity only   →  humidity:55",
+            "BackgroundColor": "#6366f1",
+            "TextColor": "#ffffff",
+            "Enabled": true,
+            "Width": "fill",
+            "Height": "auto"
+          }
+        },
+        {
+          "id": "comp_11",
+          "name": "BothButton",
+          "type": "Button",
+          "properties": {
+            "Text": "Send both as JSON   →  {\"temp\":21,\"humidity\":55}",
+            "BackgroundColor": "#0f172a",
+            "TextColor": "#ffffff",
+            "Enabled": true,
+            "Width": "fill",
+            "Height": "auto"
+          }
+        },
+        {
+          "id": "comp_12",
+          "name": "MessageOut",
+          "type": "Label",
+          "properties": {
+            "Text": "LastMessage = (nothing yet)",
+            "TextColor": "#111827",
+            "FontSize": 15,
+            "FontBold": true,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_13",
+          "name": "KeyOut",
+          "type": "Label",
+          "properties": {
+            "Text": "LastKey = · LastValue =",
+            "TextColor": "#475569",
+            "FontSize": 15,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_14",
+          "name": "Gauge1",
+          "type": "Gauge",
+          "properties": {
+            "Value": 0,
+            "Min": 0,
+            "Max": 50,
+            "Label": "°C temperature",
+            "Color": "#14b8a6"
+          }
+        },
+        {
+          "id": "comp_15",
+          "name": "LineChart1",
+          "type": "LineChart",
+          "properties": {
+            "Color": "#6366f1",
+            "MaxPoints": 30
+          }
+        },
+        {
+          "id": "comp_16",
+          "name": "ChartLabel",
+          "type": "Label",
+          "properties": {
+            "Text": "↑ humidity (%)",
+            "TextColor": "#475569",
+            "FontSize": 13,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_17",
+          "name": "MqttClient1",
+          "type": "MqttClient",
+          "properties": {
+            "BrokerUrl": "wss://test.mosquitto.org:8081",
+            "Username": "",
+            "Password": "",
+            "ClientId": "",
+            "LastTopic": "",
+            "LastMessage": "",
+            "LastKey": "",
+            "LastValue": "",
+            "IsConnected": false
+          }
+        }
+      ]
+    }
+  ],
+  "blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"bw_Button_event_Click\" x=\"12\" y=\"12\"><field name=\"INSTANCE\">ConnectButton</field><statement name=\"DO\"><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">Status</field><value name=\"VALUE\"><block type=\"text\"><field name=\"TEXT\">Connecting…</field></block></value><next><block type=\"bw_MqttClient_call_Connect\"><field name=\"INSTANCE\">MqttClient1</field></block></next></block></statement></block><block type=\"bw_MqttClient_event_Connected\" x=\"12\" y=\"228\"><field name=\"INSTANCE\">MqttClient1</field><statement name=\"DO\"><block type=\"bw_MqttClient_call_Subscribe\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value><next><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">Status</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">Connected ✓  listening on </field></block></value><value name=\"ADD1\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value></block></value></block></next></block></statement></block><block type=\"bw_Button_event_Click\" x=\"12\" y=\"516\"><field name=\"INSTANCE\">TempButton</field><statement name=\"DO\"><block type=\"bw_MqttClient_call_Publish\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value><value name=\"ARG1\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">temp:</field></block></value><value name=\"ADD1\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">TempSlider</field></block></value></block></value></block></statement></block><block type=\"bw_Button_event_Click\" x=\"12\" y=\"804\"><field name=\"INSTANCE\">HumButton</field><statement name=\"DO\"><block type=\"bw_MqttClient_call_Publish\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value><value name=\"ARG1\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">humidity:</field></block></value><value name=\"ADD1\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">HumSlider</field></block></value></block></value></block></statement></block><block type=\"bw_Button_event_Click\" x=\"12\" y=\"1092\"><field name=\"INSTANCE\">BothButton</field><statement name=\"DO\"><block type=\"bw_MqttClient_call_Publish\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value><value name=\"ARG1\"><block type=\"text_join\" inline=\"true\"><mutation items=\"5\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">{\"temp\":</field></block></value><value name=\"ADD1\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">TempSlider</field></block></value><value name=\"ADD2\"><block type=\"text\"><field name=\"TEXT\">,\"humidity\":</field></block></value><value name=\"ADD3\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">HumSlider</field></block></value><value name=\"ADD4\"><block type=\"text\"><field name=\"TEXT\">}</field></block></value></block></value></block></statement></block><block type=\"bw_Slider_event_ValueChanged\" x=\"12\" y=\"1380\"><field name=\"INSTANCE\">TempSlider</field><statement name=\"DO\"><block type=\"bw_Button_set_Text\"><field name=\"INSTANCE\">TempButton</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">Send temp only   →  temp:</field></block></value><value name=\"ADD1\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">TempSlider</field></block></value></block></value><next><block type=\"bw_Button_set_Text\"><field name=\"INSTANCE\">BothButton</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"5\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">Send both as JSON   →  {\"temp\":</field></block></value><value name=\"ADD1\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">TempSlider</field></block></value><value name=\"ADD2\"><block type=\"text\"><field name=\"TEXT\">,\"humidity\":</field></block></value><value name=\"ADD3\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">HumSlider</field></block></value><value name=\"ADD4\"><block type=\"text\"><field name=\"TEXT\">}</field></block></value></block></value></block></next></block></statement></block><block type=\"bw_Slider_event_ValueChanged\" x=\"12\" y=\"1620\"><field name=\"INSTANCE\">HumSlider</field><statement name=\"DO\"><block type=\"bw_Button_set_Text\"><field name=\"INSTANCE\">HumButton</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">Send humidity only   →  humidity:</field></block></value><value name=\"ADD1\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">HumSlider</field></block></value></block></value><next><block type=\"bw_Button_set_Text\"><field name=\"INSTANCE\">BothButton</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"5\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">Send both as JSON   →  {\"temp\":</field></block></value><value name=\"ADD1\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">TempSlider</field></block></value><value name=\"ADD2\"><block type=\"text\"><field name=\"TEXT\">,\"humidity\":</field></block></value><value name=\"ADD3\"><block type=\"bw_Slider_get_Value\"><field name=\"INSTANCE\">HumSlider</field></block></value><value name=\"ADD4\"><block type=\"text\"><field name=\"TEXT\">}</field></block></value></block></value></block></next></block></statement></block><block type=\"bw_MqttClient_event_MessageReceived\" x=\"12\" y=\"1860\"><field name=\"INSTANCE\">MqttClient1</field><statement name=\"DO\"><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">MessageOut</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">LastMessage = </field></block></value><value name=\"ADD1\"><block type=\"bw_MqttClient_get_LastMessage\"><field name=\"INSTANCE\">MqttClient1</field></block></value></block></value><next><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">KeyOut</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"4\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">LastKey = </field></block></value><value name=\"ADD1\"><block type=\"bw_MqttClient_get_LastKey\"><field name=\"INSTANCE\">MqttClient1</field></block></value><value name=\"ADD2\"><block type=\"text\"><field name=\"TEXT\">  ·  LastValue = </field></block></value><value name=\"ADD3\"><block type=\"bw_MqttClient_get_LastValue\"><field name=\"INSTANCE\">MqttClient1</field></block></value></block></value><next><block type=\"controls_if\"><value name=\"IF0\"><block type=\"bw_MqttClient_call_HasField\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"text\"><field name=\"TEXT\">temp</field></block></value></block></value><statement name=\"DO0\"><block type=\"bw_Gauge_set_Value\"><field name=\"INSTANCE\">Gauge1</field><value name=\"VALUE\"><block type=\"bw_MqttClient_call_GetField\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"text\"><field name=\"TEXT\">temp</field></block></value></block></value></block></statement><next><block type=\"controls_if\"><value name=\"IF0\"><block type=\"bw_MqttClient_call_HasField\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"text\"><field name=\"TEXT\">humidity</field></block></value></block></value><statement name=\"DO0\"><block type=\"bw_LineChart_call_AddPoint\"><field name=\"INSTANCE\">LineChart1</field><value name=\"ARG0\"><block type=\"bw_MqttClient_call_GetField\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"text\"><field name=\"TEXT\">humidity</field></block></value></block></value></block></statement></block></next></block></next></block></next></block></statement></block><block type=\"bw_MqttClient_event_MqttError\" x=\"12\" y=\"2604\"><field name=\"INSTANCE\">MqttClient1</field><statement name=\"DO\"><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">Status</field><value name=\"VALUE\"><block type=\"text\"><field name=\"TEXT\">Not connected: MQTT works in the exported app (Export PWA)</field></block></value></block></statement></block></xml>",
+  "assets": {}
+}

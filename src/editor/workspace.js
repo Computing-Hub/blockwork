@@ -57,13 +57,30 @@ export const getWorkspace = () => workspace;
 
 /** The generated JavaScript for the current blocks (the body of the app program). */
 export function getGeneratedCode() {
-  if (!workspace) return "";
-  return window.Blockly.JavaScript.workspaceToCode(workspace);
+  if (workspace) return window.Blockly.JavaScript.workspaceToCode(workspace);
+  // Blocks view not opened yet (e.g. an example opened, then Preview/Export):
+  // generate from the stashed XML in a headless workspace.
+  if (!pendingXml || !window.Blockly) return "";
+  const Blockly = window.Blockly;
+  if (!blocksRegistered) {
+    try { registerComponentBlocks(Blockly); blocksRegistered = true; }
+    catch (err) { devlog.error("Could not register component blocks:", err.message); return ""; }
+  }
+  const headless = new Blockly.Workspace();
+  try {
+    Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(pendingXml), headless);
+    return Blockly.JavaScript.workspaceToCode(headless);
+  } catch (err) {
+    devlog.error("Could not generate code from blocks:", err.message);
+    return "";
+  } finally {
+    headless.dispose();
+  }
 }
 
 /** Serialise / restore blocks as XML (used by project save/load — Milestone 7). */
 export function getBlocksXml() {
-  if (!workspace) return "";
+  if (!workspace) return pendingXml ?? "";   // not drawn yet: keep the loaded blocks
   const Blockly = window.Blockly;
   return Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));
 }

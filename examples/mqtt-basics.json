@@ -1,0 +1,213 @@
+{
+  "name": "MQTT Basics",
+  "version": "1.0",
+  "createdWith": "Blockwork v0.1",
+  "screens": [
+    {
+      "name": "Screen1",
+      "properties": {
+        "BackgroundColor": "#f8fafc",
+        "Title": "MQTT Basics",
+        "ScrollableContent": true
+      },
+      "components": [
+        {
+          "id": "comp_1",
+          "name": "Title",
+          "type": "Label",
+          "properties": {
+            "Text": "📡 MQTT basics: send and receive",
+            "TextColor": "#111827",
+            "FontSize": 20,
+            "FontBold": true,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_2",
+          "name": "Help",
+          "type": "Label",
+          "properties": {
+            "Text": "1 Connect · 2 type a message · 3 Publish. You are subscribed to the same topic, so your message comes straight back.",
+            "TextColor": "#475569",
+            "FontSize": 14,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_3",
+          "name": "Status",
+          "type": "Label",
+          "properties": {
+            "Text": "Not connected",
+            "TextColor": "#b45309",
+            "FontSize": 16,
+            "FontBold": true,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_4",
+          "name": "TopicLabel",
+          "type": "Label",
+          "properties": {
+            "Text": "Topic (use your own name so other people's messages don't mix in):",
+            "TextColor": "#111827",
+            "FontSize": 14,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_5",
+          "name": "TopicBox",
+          "type": "TextBox",
+          "properties": {
+            "Hint": "Topic",
+            "Text": "blockwork/yourname/chat",
+            "MultiLine": false,
+            "TextAlign": "Left"
+          }
+        },
+        {
+          "id": "comp_6",
+          "name": "ConnectButton",
+          "type": "Button",
+          "properties": {
+            "Text": "1 · Connect",
+            "BackgroundColor": "#16a34a",
+            "TextColor": "#ffffff",
+            "Enabled": true,
+            "Width": "fill",
+            "Height": "auto"
+          }
+        },
+        {
+          "id": "comp_7",
+          "name": "MessageLabel",
+          "type": "Label",
+          "properties": {
+            "Text": "Message:",
+            "TextColor": "#111827",
+            "FontSize": 14,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_8",
+          "name": "MessageBox",
+          "type": "TextBox",
+          "properties": {
+            "Hint": "Type a message",
+            "Text": "hello",
+            "MultiLine": false,
+            "TextAlign": "Left"
+          }
+        },
+        {
+          "id": "comp_9",
+          "name": "PublishButton",
+          "type": "Button",
+          "properties": {
+            "Text": "3 · Publish",
+            "BackgroundColor": "#2563eb",
+            "TextColor": "#ffffff",
+            "Enabled": true,
+            "Width": "fill",
+            "Height": "auto"
+          }
+        },
+        {
+          "id": "comp_10",
+          "name": "TopicOut",
+          "type": "Label",
+          "properties": {
+            "Text": "LastTopic = (nothing yet)",
+            "TextColor": "#111827",
+            "FontSize": 15,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_11",
+          "name": "MessageOut",
+          "type": "Label",
+          "properties": {
+            "Text": "LastMessage = (nothing yet)",
+            "TextColor": "#111827",
+            "FontSize": 15,
+            "FontBold": true,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_12",
+          "name": "ConnectedOut",
+          "type": "Label",
+          "properties": {
+            "Text": "IsConnected = false",
+            "TextColor": "#475569",
+            "FontSize": 15,
+            "FontBold": false,
+            "TextAlign": "Left",
+            "Width": "fill"
+          }
+        },
+        {
+          "id": "comp_13",
+          "name": "UnsubscribeButton",
+          "type": "Button",
+          "properties": {
+            "Text": "Unsubscribe",
+            "BackgroundColor": "#64748b",
+            "TextColor": "#ffffff",
+            "Enabled": true,
+            "Width": "fill",
+            "Height": "auto"
+          }
+        },
+        {
+          "id": "comp_14",
+          "name": "DisconnectButton",
+          "type": "Button",
+          "properties": {
+            "Text": "Disconnect",
+            "BackgroundColor": "#dc2626",
+            "TextColor": "#ffffff",
+            "Enabled": true,
+            "Width": "fill",
+            "Height": "auto"
+          }
+        },
+        {
+          "id": "comp_15",
+          "name": "MqttClient1",
+          "type": "MqttClient",
+          "properties": {
+            "BrokerUrl": "wss://test.mosquitto.org:8081",
+            "Username": "",
+            "Password": "",
+            "ClientId": "",
+            "LastTopic": "",
+            "LastMessage": "",
+            "LastKey": "",
+            "LastValue": "",
+            "IsConnected": false
+          }
+        }
+      ]
+    }
+  ],
+  "blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"bw_Button_event_Click\" x=\"12\" y=\"12\"><field name=\"INSTANCE\">ConnectButton</field><statement name=\"DO\"><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">Status</field><value name=\"VALUE\"><block type=\"text\"><field name=\"TEXT\">Connecting…</field></block></value><next><block type=\"bw_MqttClient_call_Connect\"><field name=\"INSTANCE\">MqttClient1</field></block></next></block></statement></block><block type=\"bw_MqttClient_event_Connected\" x=\"12\" y=\"228\"><field name=\"INSTANCE\">MqttClient1</field><statement name=\"DO\"><block type=\"bw_MqttClient_call_Subscribe\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value><next><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">Status</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">Connected ✓ and subscribed to </field></block></value><value name=\"ADD1\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value></block></value><next><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">ConnectedOut</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">IsConnected = </field></block></value><value name=\"ADD1\"><block type=\"bw_MqttClient_get_IsConnected\"><field name=\"INSTANCE\">MqttClient1</field></block></value></block></value></block></next></block></next></block></statement></block><block type=\"bw_Button_event_Click\" x=\"12\" y=\"564\"><field name=\"INSTANCE\">PublishButton</field><statement name=\"DO\"><block type=\"bw_MqttClient_call_Publish\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value><value name=\"ARG1\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">MessageBox</field></block></value></block></statement></block><block type=\"bw_MqttClient_event_MessageReceived\" x=\"12\" y=\"828\"><field name=\"INSTANCE\">MqttClient1</field><statement name=\"DO\"><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">TopicOut</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">LastTopic = </field></block></value><value name=\"ADD1\"><block type=\"bw_MqttClient_get_LastTopic\"><field name=\"INSTANCE\">MqttClient1</field></block></value></block></value><next><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">MessageOut</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">LastMessage = </field></block></value><value name=\"ADD1\"><block type=\"bw_MqttClient_get_LastMessage\"><field name=\"INSTANCE\">MqttClient1</field></block></value></block></value></block></next></block></statement></block><block type=\"bw_Button_event_Click\" x=\"12\" y=\"1068\"><field name=\"INSTANCE\">UnsubscribeButton</field><statement name=\"DO\"><block type=\"bw_MqttClient_call_Unsubscribe\"><field name=\"INSTANCE\">MqttClient1</field><value name=\"ARG0\"><block type=\"bw_TextBox_get_Text\"><field name=\"INSTANCE\">TopicBox</field></block></value><next><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">Status</field><value name=\"VALUE\"><block type=\"text\"><field name=\"TEXT\">Unsubscribed: Publish still sends, but nothing comes back</field></block></value></block></next></block></statement></block><block type=\"bw_Button_event_Click\" x=\"12\" y=\"1332\"><field name=\"INSTANCE\">DisconnectButton</field><statement name=\"DO\"><block type=\"bw_MqttClient_call_Disconnect\"><field name=\"INSTANCE\">MqttClient1</field></block></statement></block><block type=\"bw_MqttClient_event_Disconnected\" x=\"12\" y=\"1500\"><field name=\"INSTANCE\">MqttClient1</field><statement name=\"DO\"><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">Status</field><value name=\"VALUE\"><block type=\"text\"><field name=\"TEXT\">Disconnected</field></block></value><next><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">ConnectedOut</field><value name=\"VALUE\"><block type=\"text_join\" inline=\"true\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\"><field name=\"TEXT\">IsConnected = </field></block></value><value name=\"ADD1\"><block type=\"bw_MqttClient_get_IsConnected\"><field name=\"INSTANCE\">MqttClient1</field></block></value></block></value></block></next></block></statement></block><block type=\"bw_MqttClient_event_MqttError\" x=\"12\" y=\"1740\"><field name=\"INSTANCE\">MqttClient1</field><statement name=\"DO\"><block type=\"bw_Label_set_Text\"><field name=\"INSTANCE\">Status</field><value name=\"VALUE\"><block type=\"text\"><field name=\"TEXT\">Connection error: check the BrokerUrl, or use Export PWA</field></block></value></block></statement></block></xml>",
+  "assets": {}
+}
