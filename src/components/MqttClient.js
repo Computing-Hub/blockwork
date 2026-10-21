@@ -12,12 +12,51 @@
  *   when MqttClient.MessageReceived -> set Label.Text to MqttClient.LastMessage
  *
  * Typical usage: Connect, then Subscribe inside the Connected event.
+ *
+ * Several readings can share one topic: the payload says which is which.
+ * Each message is decoded into named fields, so blocks can route them:
+ *   when MqttClient.MessageReceived
+ *     if MqttClient.HasField("temp")     -> set Gauge.Value to MqttClient.GetField("temp")
+ *     if MqttClient.HasField("humidity") -> call LineChart.AddPoint(MqttClient.GetField("humidity"))
+ * Understood payloads (see decodePayload): temp:23.5 · temp=23.5 ·
+ * temp:23.5,humidity:60 · {"temp": 23.5, "humidity": 60}. A plain value
+ * like 23.5 has no fields; use LastMessage for those.
  */
 
 const MQTT_CDN = "https://unpkg.com/mqtt@5/dist/mqtt.min.js";
 
 // One live client per component instance (so Disconnect ends the right one).
 const clients = new Map();
+// The decoded fields of each instance's last message.
+const lastFields = new Map();
+
+/**
+ * Turn a payload into named fields: { temp: 23.5, humidity: 60 }.
+ * Numbers become numbers; anything that isn't name/value pairs gives {}.
+ */
+export function decodePayload(payload) {
+  const text = String(payload ?? "").trim();
+  const value = (v) => {
+    if (typeof v !== "string") return v;
+    const t = v.trim();
+    return t !== "" && Number.isFinite(Number(t)) ? Number(t) : t;
+  };
+  if (text.startsWith("{")) {
+    try {
+      const obj = JSON.parse(text);
+      if (obj && typeof obj === "object" && !Array.isArray(obj)) {
+        return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, value(v)]));
+      }
+    } catch { /* not JSON: fall through */ }
+  }
+  const fields = {};
+  for (const part of text.split(/[,;&\n]+/)) {
+    const m = /^\s*([A-Za-z_][\w.-]*)\s*[:=]\s*(.*?)\s*$/.exec(part);
+    if (!m) return {};                     // not all name/value pairs: treat as a plain value
+    fields[m[1]] = value(m[2]);
+  }
+  return fields;
+}
 
 let mqttLoad = null;
 function loadMqtt() {
@@ -49,6 +88,9 @@ export const MqttClient = {
     // Read-only readings (getter blocks only):
     LastTopic: { type: "string", default: "", editable: false },
     LastMessage: { type: "string", default: "", editable: false },
+    // For one-reading messages like temp:23.5 -> LastKey "temp", LastValue 23.5
+    LastKey: { type: "string", default: "", editable: false },
+    LastValue: { type: "string", default: "", editable: false },
     IsConnected: { type: "boolean", default: false, editable: false },
   },
 
@@ -104,8 +146,14 @@ export const MqttClient = {
         client.on("close", () => { ctx.app.set(ctx.id, "IsConnected", false); ctx.dispatch("Disconnected"); });
         client.on("error", (err) => { console.warn("MQTT error:", err && err.message); ctx.dispatch("MqttError"); });
         client.on("message", (topic, payload) => {
+          const text = payload.toString();
+          const fields = decodePayload(text);
+          const [firstKey = "", firstValue = ""] = Object.entries(fields)[0] ?? [];
+          lastFields.set(ctx.id, fields);
           ctx.app.set(ctx.id, "LastTopic", topic);
-          ctx.app.set(ctx.id, "LastMessage", payload.toString());
+          ctx.app.set(ctx.id, "LastMessage", text);
+          ctx.app.set(ctx.id, "LastKey", firstKey);
+          ctx.app.set(ctx.id, "LastValue", firstValue);
           ctx.dispatch("MessageReceived");
         });
       },
@@ -135,6 +183,23 @@ export const MqttClient = {
         if (!client) { console.warn("MqttClient: call Connect before Publish."); return; }
         client.publish(String(topic), String(message));
       },
+    },
+
+    // Read a named reading from the last message, e.g. GetField("temp") -> 23.5
+    GetField: {
+      params: [{ name: "name", type: "string" }],
+      returns: "any",
+      run: (_el, [name], ctx) => {
+        const fields = lastFields.get(ctx.id) ?? {};
+        return Object.prototype.hasOwnProperty.call(fields, String(name)) ? fields[String(name)] : "";
+      },
+    },
+
+    // Is this reading in the last message? Use it to send each reading to its widget.
+    HasField: {
+      params: [{ name: "name", type: "string" }],
+      returns: "boolean",
+      run: (_el, [name], ctx) => Object.prototype.hasOwnProperty.call(lastFields.get(ctx.id) ?? {}, String(name)),
     },
 
     Disconnect: {
