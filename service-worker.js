@@ -14,7 +14,7 @@
  * Bump CACHE_VERSION to force-drop old caches.
  */
 
-const CACHE_VERSION = "blockwork-editor-v3";
+const CACHE_VERSION = "blockwork-editor-v4";
 
 // Pre-cached so the shell opens offline even on a brand-new visit.
 const PRECACHE = [
